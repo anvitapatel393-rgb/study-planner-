@@ -1,10 +1,11 @@
 {
   "name": "My Study Planner",
   "short_name": "StudyPlanner",
-  "start_url": "/",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#fff7f6",
-  "theme_color": "#8b91f0",
+  "background_color": "#f8d7da",
+  "theme_color": "#8bd0f0",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "icons/icon-192.png",
