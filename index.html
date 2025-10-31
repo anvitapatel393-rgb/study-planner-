@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Study Planner</title>
+  <style>
+    :root{
+      --bg:#fff7f6;
+      --card:#fff;
+      --muted:#6b6b75;
+      --accent:#8b91f0;
+      --accent-2:#f6c7d7;
+      --success:#7ed3a6;
+      --glass: rgba(255,255,255,0.7);
+      --shadow: 0 6px 18px rgba(16,24,40,0.06);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,'Helvetica Neue',Arial}
+    body{background:linear-gradient(180deg,#fffaf9 0%, #fff4f6 100%);color:#111827;padding:24px}
+    .container{max-width:980px;margin:0 auto}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#d8b4ff);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px;box-shadow:var(--shadow)}
+    h1{font-size:28px;margin:0}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+
+    /* Left column cards */
+    .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+    .form-row{display:flex;gap:10px;margin-bottom:12px}
+    input[type=text], input[type=number]{flex:1;padding:10px;border-radius:8px;border:1px solid #eee;background:transparent}
+    button.primary{background:var(--accent);color:white;border:none;padding:10px 14px;border-radius:10px;cursor:pointer}
+    .tasks-list{display:flex;flex-direction:column;gap:10px}
+
+    .task{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:10px;border:1px solid #f1e7f7;background:linear-gradient(180deg,#fff,#fff);}
+    .task .left{display:flex;gap:12px;align-items:center}
+    .task .title{font-weight:600}
+    .small{font-size:13px;color:var(--muted)}
+
+    .progress-wrap{display:flex;align-items:center;gap:14px}
+    .progress{background:#eef6f2;border-radius:999px;height:14px;flex:1;overflow:hidden}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--success),#49b076);width:0%}
+
+    .quote{background:#f4f7ff;border-radius:10px;padding:14px;color:#333}
+
+    /* Right column */
+    .stats{display:flex;flex-direction:column;gap:12px}
+    .card-row{display:flex;gap:10px}
+    .stat-card{flex:1;padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fff);border:1px solid #f6eefb}
+
+    .controls{display:flex;gap:8px;align-items:center}
+    .toggle{padding:8px;border-radius:10px;border:1px solid #eee;cursor:pointer}
+
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+
+    /* responsive */
+    @media (max-width:880px){
+      .grid{grid-template-columns:1fr;}
+      .logo{width:48px;height:48px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">📚</div>
+      <div>
+        <h1>My Study Planner</h1>
+        <div class="small">Simple, pastel dashboard to track daily study goals</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <div class="small">Theme</div>
+        <div id="themeToggle" class="toggle">🌙</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT COLUMN -->
+      <div>
+        <div class="card">
+          <h3 style="margin-top:0">Add Task</h3>
+          <div class="form-row">
+            <input id="subject" type="text" placeholder="Subject / Task (e.g. Physics - Ch7)" />
+            <input id="hours" type="number" placeholder="Hours" min="0.1" step="0.25" />
+            <button id="addBtn" class="primary">Add</button>
+          </div>
+          <div class="small">Tip: use decimals, e.g., 1.5 for 1 hour 30 min</div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h3 style="margin-top:0">Tasks</h3>
+          <div id="tasks" class="tasks-list">
+            <!-- tasks appended here -->
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h3 style="margin-top:0">Daily Goals</h3>
+          <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px">
+            <input id="dailyGoal" type="number" placeholder="Goal hours (e.g. 6)" style="width:120px;padding:8px;border-radius:8px;border:1px solid #eee" />
+            <button id="saveGoal" class="primary">Save Goal</button>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress"><i id="progressBar"></i></div>
+            <div id="progressText" class="small">0/0 hrs</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="stats">
+        <div class="card stat-card">
+          <h3 style="margin-top:0">Overview</h3>
+          <div class="card-row" style="margin-top:8px">
+            <div class="stat-card" style="padding:10px">
+              <div class="small">Total Tasks</div>
+              <div id="totalTasks" style="font-weight:700;font-size:18px">0</div>
+            </div>
+            <div class="stat-card" style="padding:10px">
+              <div class="small">Completed Hours</div>
+              <div id="completedHours" style="font-weight:700;font-size:18px">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card stat-card">
+          <h3 style="margin-top:0">Quick Actions</h3>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button id="clearAll" class="toggle">Clear All</button>
+            <button id="export" class="toggle">Export JSON</button>
+            <button id="importBtn" class="toggle">Import JSON</button>
+          </div>
+          <input id="importInput" type="file" accept="application/json" style="display:none;margin-top:10px" />
+        </div>
+
+        <div class="card stat-card">
+          <h3 style="margin-top:0">Motivation</h3>
+          <div class="quote" id="quoteBox">"Start where you are. Use what you have. Do what you can."</div>
+          <div style="margin-top:8px;display:flex;gap:8px">
+            <button id="newQuote" class="toggle">New Quote</button>
+            <button id="resetData" class="toggle">Reset Progress</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <footer>Made for focused study • Local storage enabled • Copy this file to use offline</footer>
+  </div>
+
+<script>
+(function(){
+  // DOM refs
+  const subject = document.getElementById('subject');
+  const hours = document.getElementById('hours');
+  const addBtn = document.getElementById('addBtn');
+  const tasksEl = document.getElementById('tasks');
+  const totalTasks = document.getElementById('totalTasks');
+  const completedHours = document.getElementById('completedHours');
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  const dailyGoalInput = document.getElementById('dailyGoal');
+  const saveGoal = document.getElementById('saveGoal');
+  const clearAll = document.getElementById('clearAll');
+  const exportBtn = document.getElementById('export');
+  const importBtn = document.getElementById('importBtn');
+  const importInput = document.getElementById('importInput');
+  const quoteBox = document.getElementById('quoteBox');
+  const newQuote = document.getElementById('newQuote');
+  const resetData = document.getElementById('resetData');
+  const themeToggle = document.getElementById('themeToggle');
+
+  // sample quotes
+  const quotes = [
+    "The expert in anything was once a beginner.",
+    "Small daily improvements lead to big results.",
+    "Focus on progress, not perfection.",
+    "One step at a time is good walking.",
+    "Study smart, not just hard."
+  ];
+
+  // storage keys
+  const KEY = 'study_planner_v1';
+
+  // app state
+  let state = {
+    tasks: [], // {id,title,hours,done}
+    goal: 6
+  };
+
+  // init
+  function load(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      if(raw){ state = JSON.parse(raw); }
+    }catch(e){ console.warn('load error',e) }
+    render();
+  }
+
+  function save(){
+    localStorage.setItem(KEY, JSON.stringify(state));
+  }
+
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+  function addTask(title,hoursVal){
+    if(!title || !hoursVal) return;
+    const t = { id: uid(), title:title.trim(), hours: parseFloat(hoursVal), done:false };
+    state.tasks.push(t);
+    save(); render();
+    subject.value=''; hours.value=''; subject.focus();
+  }
+
+  function toggleDone(id){
+    const t = state.tasks.find(x=>x.id===id); if(!t) return; t.done = !t.done; save(); render();
+  }
+
+  function removeTask(id){ state.tasks = state.tasks.filter(x=>x.id!==id); save(); render(); }
+
+  function render(){
+    // tasks
+    tasksEl.innerHTML='';
+    state.tasks.forEach(t=>{
+      const el = document.createElement('div'); el.className='task';
+      el.innerHTML = `<div class="left"><input type=checkbox ${t.done? 'checked':''} onchange="" />
+        <div><div class='title'>${escapeHtml(t.title)}</div><div class='small'>${t.hours} hrs</div></div>
+      </div>
+      <div style='display:flex;gap:8px;align-items:center'>
+        <button class='toggle' data-id='${t.id}'>Del</button>
+      </div>`;
+      const cb = el.querySelector('input[type=checkbox]');
+      cb.addEventListener('change', ()=> toggleDone(t.id));
+      el.querySelector('button').addEventListener('click', ()=> removeTask(t.id));
+      tasksEl.appendChild(el);
+    });
+
+    totalTasks.textContent = state.tasks.length;
+
+    // hours
+    const completed = state.tasks.reduce((s,x)=> s + (x.done? x.hours : 0), 0);
+    const totalHours = state.tasks.reduce((s,x)=> s + x.hours, 0);
+    completedHours.textContent = completed.toFixed(2);
+
+    const goal = state.goal || 0;
+    const pct = goal>0 ? Math.min(100, Math.round((completed/goal)*100)) : 0;
+    progressBar.style.width = pct + '%';
+    progressText.textContent = `${completed.toFixed(2)}/${goal} hrs`;
+
+    save();
+  }
+
+  // helpers
+  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  // events
+  addBtn.addEventListener('click', ()=> addTask(subject.value, hours.value));
+  subject.addEventListener('keydown', e=>{ if(e.key==='Enter') addTask(subject.value, hours.value); });
+  hours.addEventListener('keydown', e=>{ if(e.key==='Enter') addTask(subject.value, hours.value); });
+
+  saveGoal.addEventListener('click', ()=>{
+    const g = parseFloat(dailyGoalInput.value); if(!isNaN(g) && g>0){ state.goal = g; save(); render(); dailyGoalInput.value=''; }
+  });
+
+  clearAll.addEventListener('click', ()=>{
+    if(confirm('Clear all tasks?')){ state.tasks=[]; save(); render(); }
+  });
+
+  exportBtn.addEventListener('click', ()=>{
+    const data = JSON.stringify(state, null, 2);
+    const blob = new Blob([data], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='study-planner.json'; a.click(); URL.revokeObjectURL(url);
+  });
+
+  importBtn.addEventListener('click', ()=> importInput.click());
+  importInput.addEventListener('change', e=>{
+    const f = e.target.files[0]; if(!f) return; const reader = new FileReader();
+    reader.onload = function(ev){ try{ const j = JSON.parse(ev.target.result); state = j; save(); render(); alert('Imported'); }catch(err){ alert('Invalid JSON'); } }
+    reader.readAsText(f);
+  });
+
+  newQuote.addEventListener('click', ()=>{ quoteBox.textContent = quotes[Math.floor(Math.random()*quotes.length)]; });
+  resetData.addEventListener('click', ()=>{ if(confirm('Reset completed flags only?')){ state.tasks.forEach(t=> t.done=false); save(); render(); } });
+
+  themeToggle.addEventListener('click', ()=>{
+    if(document.documentElement.style.getPropertyValue('--bg')==='rgba(0,0,0,0)') return;
+    if(themeToggle.dataset.mode === 'dark'){
+      // switch to light
+      document.documentElement.style.setProperty('--bg', '#fff7f6');
+      themeToggle.dataset.mode='light'; themeToggle.textContent='🌙';
+    } else {
+      document.documentElement.style.setProperty('--bg', 'rgba(0,0,0,0)');
+      themeToggle.dataset.mode='dark'; themeToggle.textContent='☀️';
+      alert('Dark mode is minimal — tweak CSS if you want full dark theme');
+    }
+  });
+
+  // load initial
+  if(!localStorage.getItem(KEY)){
+    // seed a sample task to show layout
+    state = { tasks:[ {id:uid(), title:'Physics — Practical file', hours:2, done:false}, {id:uid(), title:'Chemistry — Ch2 one-shot', hours:2, done:false} ], goal:6 };
+    save();
+  }
+  load();
+
+})();
+</script>
+</body>
+</html>
