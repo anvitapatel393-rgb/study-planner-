@@ -1,366 +1,155 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My Study Planner</title>
-
-  <!-- PWA manifest & theme -->
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#FFDDE6">
-
-  <!-- Fonts (system fallback included) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anvita’s Website</title>
+  <link rel="icon" type="image/png" href="icon.png">
   <style>
-    :root{
-      --bg-a: #fff7fb;
-      --accent1: #ffdfe8; /* blush */
-      --accent2: #e6f3ff; /* baby blue */
-      --card: #ffffff;
-      --muted: #6b6b75;
-      --primary: #8b91f0;
-      --glass: rgba(255,255,255,0.7);
-      --shadow: 0 10px 30px rgba(16,24,40,0.08);
-      --radius: 14px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;color:#111}
-    body{
-      background: radial-gradient(1200px 400px at 10% 10%, rgba(255,223,233,0.7), transparent 10%),
-                  radial-gradient(900px 300px at 95% 90%, rgba(230,243,255,0.8), transparent 15%),
-                  linear-gradient(180deg,var(--bg-a) 0%, #fffefe 100%);
-      padding:28px;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-    .container{max-width:1080px;margin:0 auto}
-    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
-    .logo{
-      width:64px;height:64px;border-radius:16px;
-      background:linear-gradient(135deg,#FFDDE6,#E6F3FF);
-      display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;box-shadow:var(--shadow);
-      transform:translateZ(0);
-    }
-    h1{font-size:26px;margin:0}
-    .sub{color:var(--muted);font-size:13px;margin-top:4px}
-
-    .top-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
-    .theme-btn, .install-btn{
-      padding:10px 12px;border-radius:12px;border:none;background:rgba(255,255,255,0.85);box-shadow:var(--shadow);cursor:pointer;
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f5f6ff;
+      color: #333;
+      text-align: center;
+      margin: 0;
+      padding: 0;
     }
 
-    .grid{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
-
-    /* left column */
-    .card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.6)}
-    .add-row{display:flex;gap:10px;margin-bottom:12px}
-    input[type=text], input[type=number]{flex:1;padding:10px;border-radius:10px;border:1px solid #f0edf8;background:transparent;font-size:14px}
-    .btn-primary{background:linear-gradient(90deg,#8b91f0, #7b8ef7);color:white;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
-    .small{font-size:13px;color:var(--muted)}
-
-    .tasks-list{display:flex;flex-direction:column;gap:12px;margin-top:12px}
-    .task{
-      display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:12px;border:1px solid #f5f3fb;background:linear-gradient(180deg,#fff,#fff);
-    }
-    .task .left{display:flex;gap:12px;align-items:center}
-    .dot{width:10px;height:10px;border-radius:50%;background:#ffd1e0;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
-    .title{font-weight:600}
-    .meta{font-size:13px;color:var(--muted)}
-
-    /* right column - stats */
-    .stats{display:flex;flex-direction:column;gap:14px}
-    .stat-row{display:flex;gap:12px}
-    .stat-card{flex:1;padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,1), rgba(250,250,251,1));border:1px solid #f4eefc;box-shadow:var(--shadow)}
-    .stat-num{font-size:20px;font-weight:700}
-
-    /* goals */
-    .goal-row{display:flex;gap:8px;align-items:center;margin-top:10px}
-    .progress-wrap{display:flex;align-items:center;gap:12px;margin-top:8px}
-    .progress{background:#f0f7fb;border-radius:999px;height:14px;flex:1;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,#ffd1e0,#bfe9ff);width:0%;transition:width .4s ease}
-
-    .quote{background:linear-gradient(90deg,#fff6fb,#f6fdff);padding:12px;border-radius:12px;border:1px solid #f6eefb}
-
-    footer{text-align:center;color:var(--muted);font-size:13px;margin-top:20px}
-
-    /* responsive */
-    @media (max-width:920px){
-      .grid{grid-template-columns:1fr; }
-      .top-actions{margin-top:12px}
+    header {
+      background: #5c6bc0;
+      color: white;
+      padding: 20px 0;
+      font-size: 1.8em;
+      font-weight: 600;
+      letter-spacing: 1px;
     }
 
-    /* small interactive hover */
-    .task:hover{transform:translateY(-4px);transition:transform .15s ease}
-    .btn-ghost{background:transparent;border:1px solid #eee;padding:8px 10px;border-radius:10px;cursor:pointer}
+    section {
+      margin: 30px auto;
+      width: 90%;
+      max-width: 700px;
+      background: #fff;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #5c6bc0;
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+
+    /* ---------- Pomodoro ---------- */
+    #pomodoro {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      border-radius: 20px;
+      background: #f8f8f8;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #timer {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #333;
+      margin: 20px 0;
+    }
+
+    #pomodoro button {
+      margin: 5px;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 10px;
+      background-color: #ff6b6b;
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #pomodoro button:hover {
+      background-color: #e65c5c;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 15px;
+      background: #5c6bc0;
+      color: white;
+      font-size: 0.9em;
+      border-radius: 0 0 20px 20px;
+    }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <header>
-      <div class="logo">📚</div>
-      <div>
-        <h1>My Study Planner</h1>
-        <div class="sub">Calm pastel dashboard to plan and track daily study goals</div>
-      </div>
+  <header>🌸 Welcome to Anvita’s Website 🌸</header>
 
-      <div class="top-actions">
-        <button id="themeBtn" class="theme-btn" title="Toggle theme">🌙</button>
-        <button id="installBtn" class="install-btn" style="display:none">Install App</button>
-      </div>
-    </header>
+  <section>
+    <h2>About Me</h2>
+    <p>Hi! I’m <strong>Anvita Patel</strong> — a Class 12 student preparing for NEET and boards.  
+    I love Biology, Organic Chemistry, and web designing 💻🌿</p>
+  </section>
 
-    <div class="grid">
-      <!-- LEFT -->
-      <div>
-        <div class="card">
-          <h3 style="margin:0 0 8px 0">Add Task</h3>
-          <div class="add-row">
-            <input id="taskTitle" type="text" placeholder="Subject / Task e.g. Physics: Practical" />
-            <input id="taskHours" type="number" min="0.1" step="0.25" placeholder="Hrs" style="width:96px" />
-            <button id="addBtn" class="btn-primary">Add</button>
-          </div>
-          <div class="small">Tip: enter decimals for partial hours (e.g., 0.5 = 30 minutes)</div>
+  <section>
+    <h2>Study Goals</h2>
+    <ul style="text-align:left; display:inline-block; text-align:left;">
+      <li>✔️ Chemistry Ch 2 – Completed</li>
+      <li>✔️ Physics Ch 3 – Completed</li>
+      <li>🌱 Biology Ch 5 – In progress</li>
+      <li>📘 Physical Education – File Work</li>
+    </ul>
+  </section>
 
-          <div class="tasks-list" id="tasksList" aria-live="polite"></div>
-        </div>
-
-        <div class="card" style="margin-top:16px">
-          <h3 style="margin:0 0 8px 0">Daily Goal</h3>
-          <div class="goal-row">
-            <input id="goalInput" type="number" placeholder="Goal hrs (e.g. 6)" style="width:140px;padding:10px;border-radius:10px;border:1px solid #f0edf8" />
-            <button id="saveGoal" class="btn-primary">Save Goal</button>
-            <button id="resetGoal" class="btn-ghost">Reset</button>
-          </div>
-
-          <div class="progress-wrap">
-            <div class="progress"><i id="progressBar"></i></div>
-            <div id="progressText" class="meta">0 / 0 hrs</div>
-          </div>
-          <div class="small" style="margin-top:8px">Mark tasks as done to add to completed hours.</div>
-        </div>
-      </div>
-
-      <!-- RIGHT -->
-      <aside class="stats">
-        <div class="stat-card card">
-          <h3 style="margin:0 0 8px 0">Overview</h3>
-          <div class="stat-row" style="margin-top:10px">
-            <div class="stat-card" style="padding:12px">
-              <div class="small">Total Tasks</div>
-              <div id="totalTasks" class="stat-num">0</div>
-            </div>
-            <div class="stat-card" style="padding:12px">
-              <div class="small">Completed Hours</div>
-              <div id="completedHours" class="stat-num">0.00</div>
-            </div>
-          </div>
-
-          <div style="margin-top:12px" class="small">Total planned hours: <span id="plannedHours">0.00</span> hrs</div>
-        </div>
-
-        <div class="stat-card card">
-          <h3 style="margin:0 0 8px 0">Motivation</h3>
-          <div id="quoteBox" class="quote">"Small daily improvements lead to big results."</div>
-          <div style="margin-top:10px;display:flex;gap:8px">
-            <button id="newQuote" class="btn-ghost">New Quote</button>
-            <button id="clearCompleted" class="btn-ghost">Clear Completed</button>
-          </div>
-        </div>
-
-        <div class="stat-card card">
-          <h3 style="margin:0 0 8px 0">Info</h3>
-          <div class="small">Works offline & can be installed as an app. Your data stays on this device (local storage).</div>
-        </div>
-      </aside>
+  <!-- 🍅 Pomodoro Timer Section -->
+  <section id="pomodoro">
+    <h2>🍅 Pomodoro Timer</h2>
+    <p id="timer">25:00</p>
+    <div class="buttons">
+      <button onclick="startTimer()">Start</button>
+      <button onclick="pauseTimer()">Pause</button>
+      <button onclick="resetTimer()">Reset</button>
     </div>
+  </section>
 
-    <footer>Made for focused study • Pastel UI • Local storage enabled</footer>
-  </div>
+  <footer>Made with 💜 by Anvita Patel</footer>
 
-  <!-- App script -->
   <script>
-  (function(){
-    // DOM
-    const taskTitle = document.getElementById('taskTitle');
-    const taskHours = document.getElementById('taskHours');
-    const addBtn = document.getElementById('addBtn');
-    const tasksList = document.getElementById('tasksList');
-    const totalTasks = document.getElementById('totalTasks');
-    const completedHoursEl = document.getElementById('completedHours');
-    const progressBar = document.getElementById('progressBar');
-    const progressText = document.getElementById('progressText');
-    const goalInput = document.getElementById('goalInput');
-    const saveGoal = document.getElementById('saveGoal');
-    const resetGoal = document.getElementById('resetGoal');
-    const plannedHoursEl = document.getElementById('plannedHours');
-    const quoteBox = document.getElementById('quoteBox');
-    const newQuote = document.getElementById('newQuote');
-    const clearCompleted = document.getElementById('clearCompleted');
-    const themeBtn = document.getElementById('themeBtn');
-    const installBtn = document.getElementById('installBtn');
+    let time = 25 * 60;
+    let timerInterval;
 
-    const QUOTES = [
-      "Small daily improvements lead to big results.",
-      "Focus on progress, not perfection.",
-      "The expert in anything was once a beginner.",
-      "One step at a time is good walking.",
-      "Study smart, not just hard."
-    ];
-
-    const KEY = 'study_planner_pwa_v2';
-
-    // state
-    let state = { tasks: [], goal: 6 };
-
-    // uid
-    const uid = ()=> Date.now().toString(36) + Math.random().toString(36).slice(2,7);
-
-    // load
-    function load(){
-      try{
-        const raw = localStorage.getItem(KEY);
-        if(raw) state = JSON.parse(raw);
-      }catch(e){ console.warn(e) }
-      render();
-    }
-    function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
-
-    function addTask(){
-      const title = (taskTitle.value || '').trim();
-      const hours = parseFloat(taskHours.value);
-      if(!title || isNaN(hours) || hours <= 0) return alert('Enter task and hours');
-      state.tasks.push({ id: uid(), title, hours: +hours, done:false });
-      taskTitle.value=''; taskHours.value=''; save(); render();
+    function updateTimerDisplay() {
+      let minutes = Math.floor(time / 60);
+      let seconds = time % 60;
+      document.getElementById("timer").textContent =
+        `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     }
 
-    function toggleDone(id){
-      const t = state.tasks.find(x=>x.id===id); if(!t) return;
-      t.done = !t.done; save(); render();
-    }
-    function removeTask(id){
-      state.tasks = state.tasks.filter(x=>x.id!==id); save(); render();
-    }
-    function clearCompletedTasks(){
-      if(!confirm('Clear completed tasks?')) return;
-      state.tasks = state.tasks.filter(x=>!x.done); save(); render();
-    }
-
-    function render(){
-      // tasks
-      tasksList.innerHTML = '';
-      state.tasks.forEach(t=>{
-        const el = document.createElement('div');
-        el.className = 'task';
-        el.innerHTML = `
-          <div class="left">
-            <div class="dot" style="background:${t.done? 'linear-gradient(90deg,#bfe9ff,#ffd1e0)' : '#ffd1e0'}"></div>
-            <div>
-              <div class="title">${escapeHtml(t.title)}</div>
-              <div class="meta">${t.hours} hrs</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <button class="btn-ghost" data-action="toggle" data-id="${t.id}">${t.done? 'Undo' : 'Done'}</button>
-            <button class="btn-ghost" data-action="del" data-id="${t.id}">Del</button>
-          </div>
-        `;
-        tasksList.appendChild(el);
-      });
-
-      // attach events
-      tasksList.querySelectorAll('button').forEach(b=>{
-        const id = b.dataset.id;
-        if(b.dataset.action === 'toggle') b.onclick = ()=> toggleDone(id);
-        if(b.dataset.action === 'del') b.onclick = ()=> { if(confirm('Delete this task?')) removeTask(id); };
-      });
-
-      // stats
-      totalTasks.textContent = state.tasks.length;
-      const completed = state.tasks.reduce((s,x)=> s + (x.done? x.hours : 0), 0);
-      const planned = state.tasks.reduce((s,x)=> s + x.hours, 0);
-      completedHoursEl.textContent = completed.toFixed(2);
-      plannedHoursEl.textContent = planned.toFixed(2);
-
-      const goal = state.goal || 0;
-      const pct = goal > 0 ? Math.min(100, Math.round((completed/goal)*100)) : 0;
-      progressBar.style.width = pct + '%';
-      progressText.textContent = `${completed.toFixed(2)} / ${goal} hrs`;
-
-      save();
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        time--;
+        updateTimerDisplay();
+        if (time <= 0) {
+          clearInterval(timerInterval);
+          alert("Time's up! Take a 5-minute break 🍵");
+        }
+      }, 1000);
     }
 
-    function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-    // events
-    addBtn.addEventListener('click', addTask);
-    taskTitle.addEventListener('keydown', e=>{ if(e.key==='Enter') addTask(); });
-    taskHours.addEventListener('keydown', e=>{ if(e.key==='Enter') addTask(); });
-
-    saveGoal.addEventListener('click', ()=>{
-      const g = parseFloat(goalInput.value);
-      if(isNaN(g) || g <= 0) return alert('Enter valid goal hours');
-      state.goal = +g; goalInput.value=''; save(); render();
-    });
-    resetGoal.addEventListener('click', ()=>{ if(confirm('Reset daily goal to 0?')){ state.goal = 0; save(); render(); } });
-
-    newQuote.addEventListener('click', ()=>{ quoteBox.textContent = QUOTES[Math.floor(Math.random()*QUOTES.length)]; });
-    clearCompleted.addEventListener('click', clearCompletedTasks);
-
-    // seed demo if empty
-    if(!localStorage.getItem(KEY)){
-      state = {
-        tasks: [
-          {id: uid(), title: 'Physics — Practical file', hours: 2, done: false},
-          {id: uid(), title: 'Chemistry — Ch2 one-shot', hours: 1.5, done: false}
-        ],
-        goal: 6
-      };
-      save();
+    function pauseTimer() {
+      clearInterval(timerInterval);
     }
-    load();
 
-    // Theme toggle (simple)
-    themeBtn.addEventListener('click', ()=>{
-      const curr = document.documentElement.dataset.theme === 'dark';
-      if(curr){
-        document.documentElement.dataset.theme = 'light';
-        themeBtn.textContent = '🌙';
-        document.body.style.background = 'radial-gradient(1200px 400px at 10% 10%, rgba(255,223,233,0.7), transparent 10%), radial-gradient(900px 300px at 95% 90%, rgba(230,243,255,0.8), transparent 15%), linear-gradient(180deg,var(--bg-a) 0%, #fffefe 100%)';
-      } else {
-        document.documentElement.dataset.theme = 'dark';
-        themeBtn.textContent = '☀️';
-        document.body.style.background = 'linear-gradient(180deg,#0f1724,#071026)';
-        // tiny color shift for dark - keep readability (not full dark overhaul)
-      }
-    });
-
-    // PWA install prompt handling
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = 'inline-block';
-    });
-
-    installBtn.addEventListener('click', async () => {
-      installBtn.style.display = 'none';
-      if(!deferredPrompt) return;
-      deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      // you can inspect choice.outcome if you want
-      deferredPrompt = null;
-    });
-
-    // Register service worker (if available)
-    if('serviceWorker' in navigator){
-      navigator.serviceWorker.register('/sw.js').then(()=>{
-        // console.log('sw registered');
-      }).catch(err=> {
-        // console.warn('sw failed', err);
-      });
+    function resetTimer() {
+      clearInterval(timerInterval);
+      time = 25 * 60;
+      updateTimerDisplay();
     }
-  })();
+
+    updateTimerDisplay();
   </script>
 </body>
 </html>
