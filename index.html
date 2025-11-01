@@ -1,155 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anvita’s Website</title>
-  <link rel="icon" type="image/png" href="icon.png">
-  <style>
-    body {
-      font-family: "Poppins", sans-serif;
-      background: #f5f6ff;
-      color: #333;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Study Tracker</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #0a1a3f; /* Deep navy */
+    color: #e2e8f0; /* Soft light gray */
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 {
+    margin-bottom: 40px;
+    font-weight: bold;
+    color: #e2e8f0;
+  }
+  .goals-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .goal-section {
+    background: #112e6f; /* Slightly lighter dark blue */
+    border-radius: 10px;
+    padding: 20px;
+    width: 280px;
+    box-shadow: 0 2px 5px rgba(20, 45, 90, 0.7);
+  }
+  .goal-section h2 {
+    margin-bottom: 15px;
+    color: #e2e8f0;
+  }
+  .goal-section input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1.5px solid #38bdf8; /* bright aqua border */
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #e2e8f0;
+    background-color: #0a1a3f; /* match background so input blends */
+  }
+  .goal-section input[type="text"]::placeholder {
+    color: #a0aec0;
+  }
+  .goals-list {
+    text-align: left;
+  }
+  .goals-list label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #e2e8f0;
+  }
+  .goals-list input[type="checkbox"] {
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #38bdf8; /* modern browsers support */
+  }
 
-    header {
-      background: #5c6bc0;
-      color: white;
-      padding: 20px 0;
-      font-size: 1.8em;
-      font-weight: 600;
-      letter-spacing: 1px;
+  .timer-container {
+    background: #112e6f; /* Slightly lighter dark blue */
+    margin: 0 auto;
+    padding: 25px 40px;
+    width: 320px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(20, 45, 90, 0.7);
+  }
+  .timer-container h3 {
+    margin-bottom: 10px;
+    color: #e2e8f0;
+  }
+  .timer {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #e2e8f0;
+  }
+  .timer-buttons button {
+    background-color: #38bdf8; /* bright aqua blue */
+    border: none;
+    color: #0a1a3f; /* deep navy text on buttons */
+    padding: 10px 25px;
+    margin: 0 8px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+  }
+  .timer-buttons button:disabled {
+    background-color: #7dd3fc; /* lighter aqua for disabled */
+    cursor: not-allowed;
+    color: #0a1a3f;
+  }
+  .timer-buttons button:hover:not(:disabled) {
+    background-color: #0ea5e9; /* slightly darker aqua on hover */
+  }
+  @media (max-width: 900px) {
+    .goals-container {
+      flex-direction: column;
+      align-items: center;
     }
-
-    section {
-      margin: 30px auto;
+    .goal-section {
       width: 90%;
-      max-width: 700px;
-      background: #fff;
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 25px;
     }
-
-    h2 {
-      color: #5c6bc0;
-      font-size: 1.5em;
-      margin-bottom: 10px;
+    .timer-container {
+      width: 90%;
     }
-
-    /* ---------- Pomodoro ---------- */
-    #pomodoro {
-      text-align: center;
-      margin-top: 40px;
-      padding: 20px;
-      border-radius: 20px;
-      background: #f8f8f8;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    #timer {
-      font-size: 2.5em;
-      font-weight: bold;
-      color: #333;
-      margin: 20px 0;
-    }
-
-    #pomodoro button {
-      margin: 5px;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 10px;
-      background-color: #ff6b6b;
-      color: white;
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    #pomodoro button:hover {
-      background-color: #e65c5c;
-    }
-
-    footer {
-      margin-top: 40px;
-      padding: 15px;
-      background: #5c6bc0;
-      color: white;
-      font-size: 0.9em;
-      border-radius: 0 0 20px 20px;
-    }
-  </style>
+  }
+</style>
 </head>
-
 <body>
-  <header>🌸 Welcome to Anvita’s Website 🌸</header>
 
-  <section>
-    <h2>About Me</h2>
-    <p>Hi! I’m <strong>Anvita Patel</strong> — a Class 12 student preparing for NEET and boards.  
-    I love Biology, Organic Chemistry, and web designing 💻🌿</p>
-  </section>
+<h1>My Study Tracker</h1>
 
-  <section>
-    <h2>Study Goals</h2>
-    <ul style="text-align:left; display:inline-block; text-align:left;">
-      <li>✔️ Chemistry Ch 2 – Completed</li>
-      <li>✔️ Physics Ch 3 – Completed</li>
-      <li>🌱 Biology Ch 5 – In progress</li>
-      <li>📘 Physical Education – File Work</li>
-    </ul>
-  </section>
-
-  <!-- 🍅 Pomodoro Timer Section -->
-  <section id="pomodoro">
-    <h2>🍅 Pomodoro Timer</h2>
-    <p id="timer">25:00</p>
-    <div class="buttons">
-      <button onclick="startTimer()">Start</button>
-      <button onclick="pauseTimer()">Pause</button>
-      <button onclick="resetTimer()">Reset</button>
+<div class="goals-container">
+  <div class="goal-section" id="daily-goals-section">
+    <h2>Daily Goals</h2>
+    <input type="text" id="daily-goal-input" placeholder="Add a goal" />
+    <div class="goals-list" id="daily-goals-list">
+      <label><input type="checkbox" /> Read Biology</label>
+      <label><input type="checkbox" /> Chemistry practice</label>
+      <label><input type="checkbox" /> Solve Physics problems</label>
     </div>
-  </section>
+  </div>
 
-  <footer>Made with 💜 by Anvita Patel</footer>
+  <div class="goal-section" id="weekly-goals-section">
+    <h2>Weekly Goals</h2>
+    <input type="text" id="weekly-goal-input" placeholder="Add a goal" />
+    <div class="goals-list" id="weekly-goals-list">
+      <label><input type="checkbox" /> Revise notes</label>
+      <label><input type="checkbox" /> Take a mock test</label>
+    </div>
+  </div>
 
-  <script>
-    let time = 25 * 60;
-    let timerInterval;
+  <div class="goal-section" id="longterm-goals-section">
+    <h2>Long-Term Goals</h2>
+    <input type="text" id="longterm-goal-input" placeholder="Add a goal" />
+    <div class="goals-list" id="longterm-goals-list">
+      <label><input type="checkbox" /> Score 650+ in NEET</label>
+    </div>
+  </div>
+</div>
 
-    function updateTimerDisplay() {
-      let minutes = Math.floor(time / 60);
-      let seconds = time % 60;
-      document.getElementById("timer").textContent =
-        `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    }
+<div class="timer-container" role="timer" aria-live="polite" aria-atomic="true">
+  <h3>Pomodoro Timer</h3>
+  <div class="timer" id="timer">50:00</div>
+  <div class="timer-buttons">
+    <button id="start-btn">Start</button>
+    <button id="pause-btn" disabled>Pause</button>
+    <button id="reset-btn" disabled>Reset</button>
+  </div>
+</div>
 
-    function startTimer() {
-      clearInterval(timerInterval);
-      timerInterval = setInterval(() => {
-        time--;
-        updateTimerDisplay();
-        if (time <= 0) {
-          clearInterval(timerInterval);
-          alert("Time's up! Take a 5-minute break 🍵");
-        }
-      }, 1000);
-    }
+<script>
+  function addGoal(inputId, listId) {
+    const input = document.getElementById(inputId);
+    const list = document.getElementById(listId);
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && input.value.trim() !== '') {
+        const newLabel = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        newLabel.appendChild(checkbox);
+        newLabel.appendChild(document.createTextNode(' ' + input.value.trim()));
+        list.appendChild(newLabel);
+        input.value = '';
+      }
+    });
+  }
 
-    function pauseTimer() {
-      clearInterval(timerInterval);
-    }
+  addGoal('daily-goal-input', 'daily-goals-list');
+  addGoal('weekly-goal-input', 'weekly-goals-list');
+  addGoal('longterm-goal-input', 'longterm-goals-list');
 
-    function resetTimer() {
-      clearInterval(timerInterval);
-      time = 25 * 60;
-      updateTimerDisplay();
-    }
+  const timerDisplay = document.getElementById('timer');
+  const startBtn = document.getElementById('start-btn');
+  const pauseBtn = document.getElementById('pause-btn');
+  const resetBtn = document.getElementById('reset-btn');
 
-    updateTimerDisplay();
-  </script>
+  let timerDuration = 50 * 60;
+  let timer = timerDuration;
+  let intervalId = null;
+  let isRunning = false;
+
+  function updateTimerDisplay(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    timerDisplay.textContent = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+  }
+
+  function startTimer() {
+    if (isRunning) return;
+    isRunning = true;
+    startBtn.disabled = true;
+    pauseBtn.disabled = false;
+    resetBtn.disabled = false;
+
+    intervalId = setInterval(() => {
+      if (timer > 0) {
+        timer--;
+        updateTimerDisplay(timer);
+      } else {
+        clearInterval(intervalId);
+        isRunning = false;
+        startBtn.disabled = false;
+        pauseBtn.disabled = true;
+        resetBtn.disabled = false;
+        alert('Time is up! Take a break.');
+      }
+    }, 1000);
+  }
+
+  function pauseTimer() {
+    if (!isRunning) return;
+    clearInterval(intervalId);
+    isRunning = false;
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+  }
+
+  function resetTimer() {
+    clearInterval(intervalId);
+    isRunning = false;
+    timer = timerDuration;
+    updateTimerDisplay(timer);
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+    resetBtn.disabled = true;
+  }
+
+  startBtn.addEventListener('click', startTimer);
+  pauseBtn.addEventListener('click', pauseTimer);
+  resetBtn.addEventListener('click', resetTimer);
+
+  updateTimerDisplay(timer);
+</script>
+
 </body>
 </html>
